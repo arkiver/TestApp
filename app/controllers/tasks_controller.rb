@@ -7,6 +7,9 @@ class TasksController < ApplicationController
       format.json {
         render json: @task
       }
+      format.html{
+        render :fetch_task
+      }
     end
   end
 
