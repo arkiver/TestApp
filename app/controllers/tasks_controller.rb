@@ -1,6 +1,22 @@
 class TasksController < ApplicationController
-  before_action :set_task, :except => :create_task
+  before_action :set_task, :except => [:create_task, :index]
   skip_before_filter :verify_authenticity_token
+
+  def index
+    @tasks = Task.all
+  end
+
+  def new
+  end
+
+  def create
+  end
+
+  def update
+  end
+
+  def destroy
+  end
 
   def fetch_task
     respond_to do |format|
