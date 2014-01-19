@@ -11,4 +11,6 @@ body {
 
 .task {
     margin: 10px;
+    > h4, > .editTask { display: inline-block; }
+    > h4 { margin-right: 10px; }
 }

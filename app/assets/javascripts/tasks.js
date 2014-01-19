@@ -4,9 +4,9 @@
 function renderTask(task) {
     var taskStr  =  '<div class="task">';
         taskStr +=  '<h4>' + task.title + '</h4>';
-        taskStr +=  '<p>' + task.title + '</p>';
+        taskStr +=  '<a href="#" class="editTask" data-tid="' + task.id +'">Edit Task</a>';
+        taskStr +=  '<p>' + task.description + '</p>';
         taskStr +=  '</div>';
-        // $('body').prepend($(taskStr));
         return taskStr;
 }
 
@@ -26,4 +26,27 @@ function renderAllTasks () {
         allTasks += renderTask(tasksData[i]);
     };
     return allTasks;
+}
+
+/* =================================== EDITING/UPDATING ========================================================== */
+
+function editTask (taskId) {
+    // accept ID
+    // take the values of the form
+    // create an obj
+    // push it in an array
+
+}
+/* =================================== SERVER REQUEST ========================================================== */
+
+function XHRequest (url, method, data) {
+    $.ajax({
+        url: url,
+        type: method,
+        data: data
+    }).done(function( data ) {
+        console.log('Request Successful' + data);
+    }).fail(function( data ) {
+        console.log('Request Failed' + data);
+    });
 }
