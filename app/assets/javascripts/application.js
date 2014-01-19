@@ -13,4 +13,5 @@
 //= require jquery.min
 //= require lib/underscore-min
 //= require lib/backbone-min
+//= require tasks
 //= require main

@@ -1,14 +1,12 @@
 <script type="text/javascript">
+    
+    // On Page Data
     var tasksData = <%= @tasks.as_json.to_json.html_safe %>;
 
-    function renderTask(task) {
-        var taskStr  =  '<div class="task">';
-            taskStr +=  '<h4>' + task.title + '</h4>';
-            taskStr +=  '<p>' + task.title + '</p>';
-            taskStr +=  '</div>';
-            $('body').prepend($(taskStr));
-            return true;
-    }
 
+    // Rendering All Tasks
+    $('body').html(renderAllTasks());
+
+    
 
 </script>
