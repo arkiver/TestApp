@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :set_task, :except => [:create_task, :index]
+  before_action :set_task, :except => [:create_task, :index, :delete_task]
   skip_before_filter :verify_authenticity_token
 
   def index
@@ -48,6 +48,17 @@ class TasksController < ApplicationController
       respond_to do |format|
         format.json {
           render json: task
+        }
+      end
+    end
+  end
+
+  def delete_task
+    task = Task.find(params[:id])
+    if task.destroy
+      respond_to do |format|
+        format.json {
+          render json: {'status' => 'deleted'}
         }
       end
     end
