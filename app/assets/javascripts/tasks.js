@@ -2,9 +2,9 @@
 
 // Render one task
 function renderTask(task) {
-    var taskStr  =  '<div class="task">';
+    var taskStr  =  '<div class="task" data-tid="' + task.id + '">';
         taskStr +=  '<h4>' + task.title + '</h4>';
-        taskStr +=  '<a href="#" class="deleteTask" data-tid="' + task.id +'">Delete Task</a>';
+        taskStr +=  '<a href="#" class="deleteTask" data-tid="' + task.id +'">X</a>';
         taskStr +=  '<p>' + task.description + '</p>';
         taskStr +=  '</div>';
         return taskStr;
@@ -28,27 +28,50 @@ function renderAllTasks () {
     return allTasks;
 }
 
-/* =================================== EDITING/UPDATING ========================================================== */
+/* ========================================== CREATING ========================================================== */
+
+function createTask (formData) {
+
+    var taskObj = {
+        title: formData.title,
+        description: formData.description
+    }
+
+    XHRequest ('create_task.json', 'POST', taskObj, function(result) {
+        $('#container').append(renderTask(result));
+        document.querySelector('#taskForm').reset();
+    });
+}
+
+
+/* ========================================== DELETING ========================================================== */
 
 function deleteTask (taskId) {
-    // accept ID
-    // take the values/data of the form
-    // create an obj
-    // push it in an array
-    console.log('id ', taskId);
 
     var url = '/delete_task?id=' + taskId;
-    XHRequest (url, 'DELETE');
+
+    XHRequest (url, 'DELETE', null, function(result) {
+        if ( result.status === 'deleted') {
+            _.each( $('.task'), function(node){
+                if ( $(node).attr('data-tid') === taskId.toString() ) {
+                    $(node).remove();
+                }
+            });
+        }
+    });
 }
 /* =================================== SERVER REQUEST ========================================================== */
 
-function XHRequest (url, method, data) {
+function XHRequest (url, method, data, callback) {
     $.ajax({
         url: url,
         type: method,
         data: data
     }).done(function( data ) {
         console.log('Request Successful' + data);
+        if ( callback && typeof callback === 'function' ) {
+            callback(data);
+        }
     }).fail(function( data ) {
         console.log('Request Failed' + data);
     });

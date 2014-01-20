@@ -1,18 +1,47 @@
+<form id="taskForm">
+    <input type="text" id="taskInput" placeholder="Enter task name">
+    <textarea placeholder="Enter description" id="descInput"></textarea>
+    <input type="submit" value="Create Task">
+</form>
+<div id="container"></div>
+
 <script type="text/javascript">
-    
-    // On Page Data
-    var tasksData = <%= @tasks.as_json.to_json.html_safe %>;
+
+// On Page Data
+var tasksData = <%= @tasks.as_json.to_json.html_safe %>;
 
 
-    // Rendering All Tasks
-    $('body').html(renderAllTasks());
+// Rendering All Tasks
+$('#container').html(renderAllTasks());
 
-    $('body').on('click', '.deleteTask', function (event) {
-        event.preventDefault();
+// Deleting
+$('body').on('click', '.deleteTask', function (event) {
+    event.preventDefault();
 
-        var taskID = $(this).data('tid');
+    var taskID = $(this).data('tid');
 
-        deleteTask(taskID);
-    });
+    deleteTask(taskID);
+});
+
+// Creating
+$('#taskForm').submit(function(event){
+    event.preventDefault();
+
+    var taskInput,
+        descInput,
+        formData;
+
+    if ( $('#taskInput').val() !== '' && $('#descInput').val() !== '' ) {
+        taskInput = $('#taskInput').val();
+        descInput = $('#descInput').val();
+
+        formData = {
+            title: taskInput,
+            description: descInput
+        }
+        createTask(formData);
+    }
+
+});
 
 </script>
