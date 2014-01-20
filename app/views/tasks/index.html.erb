@@ -7,6 +7,12 @@
     // Rendering All Tasks
     $('body').html(renderAllTasks());
 
-    
+    $('body').on('click', '.deleteTask', function (event) {
+        event.preventDefault();
+
+        var taskID = $(this).data('tid');
+
+        deleteTask(taskID);
+    });
 
 </script>

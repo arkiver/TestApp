@@ -4,7 +4,7 @@
 function renderTask(task) {
     var taskStr  =  '<div class="task">';
         taskStr +=  '<h4>' + task.title + '</h4>';
-        taskStr +=  '<a href="#" class="editTask" data-tid="' + task.id +'">Edit Task</a>';
+        taskStr +=  '<a href="#" class="deleteTask" data-tid="' + task.id +'">Delete Task</a>';
         taskStr +=  '<p>' + task.description + '</p>';
         taskStr +=  '</div>';
         return taskStr;
@@ -30,12 +30,15 @@ function renderAllTasks () {
 
 /* =================================== EDITING/UPDATING ========================================================== */
 
-function editTask (taskId) {
+function deleteTask (taskId) {
     // accept ID
-    // take the values of the form
+    // take the values/data of the form
     // create an obj
     // push it in an array
+    console.log('id ', taskId);
 
+    var url = '/delete_task?id=' + taskId;
+    XHRequest (url, 'DELETE');
 }
 /* =================================== SERVER REQUEST ========================================================== */
 
