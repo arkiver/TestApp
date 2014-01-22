@@ -1,0 +1,45 @@
+@import "global/_css3";
+@import "global/_variables";
+@import "global/_reset";
+@import "global/_mixins";
+@import "global/_functions";
+@import "global/_typography";
+
+body {
+    font-family: $defaultFamily;
+}
+
+.task {
+    padding: 10px;
+    background-color: #eee;
+    margin-bottom: 10px;
+    > h4 { float: left; margin-right: 10px; font-size: 14px; color: #f77f00; }
+    > a {
+        text-decoration: none;
+    }
+}
+
+#taskForm {
+    width: 500px;
+    margin: 20px auto;
+    > *:not(#taskSubmit) {
+        width: 100%;
+        font-size: 0.90rem;
+        padding: 10px 5px;
+        border: #eee solid 1px;
+        resize: none;
+        margin-bottom: 10px;
+        &:focus { outline: none; }
+    }
+    #taskInput {
+
+    }
+    #descInput {
+        height: 100px;
+    }
+}
+
+#container {
+    width: 500px;
+    margin: auto;
+}

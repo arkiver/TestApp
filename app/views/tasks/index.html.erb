@@ -1,7 +1,7 @@
 <form id="taskForm">
-    <input type="text" id="taskInput" placeholder="Enter task name">
-    <textarea placeholder="Enter description" id="descInput"></textarea>
-    <input type="submit" value="Create Task">
+    <input type="text" id="taskInput" placeholder="Task name">
+    <textarea placeholder="Task description" id="descInput"></textarea>
+    <input type="submit" id="taskSubmit" value="Create Task">
 </form>
 <div id="container"></div>
 
@@ -14,7 +14,7 @@ var tasksData = <%= @tasks.as_json.to_json.html_safe %>;
 // Rendering All Tasks
 $('#container').html(renderAllTasks());
 
-// Deleting
+// Deleting Task
 $('body').on('click', '.deleteTask', function (event) {
     event.preventDefault();
 
@@ -23,7 +23,7 @@ $('body').on('click', '.deleteTask', function (event) {
     deleteTask(taskID);
 });
 
-// Creating
+// Creating Task
 $('#taskForm').submit(function(event){
     event.preventDefault();
 

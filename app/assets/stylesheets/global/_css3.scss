@@ -1,0 +1,11 @@
+@mixin box_sizing() {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+@mixin opacity($opacityValue){
+	opacity: $opacityValue;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$opacityValue * 100})"; //IE8
+	filter: alpha(opacity=$opacityValue * 100); //IE8
+}

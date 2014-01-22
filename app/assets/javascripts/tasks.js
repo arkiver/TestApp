@@ -2,9 +2,11 @@
 
 // Render one task
 function renderTask(task) {
+
     var taskStr  =  '<div class="task" data-tid="' + task.id + '">';
         taskStr +=  '<h4>' + task.title + '</h4>';
         taskStr +=  '<a href="#" class="deleteTask" data-tid="' + task.id +'">X</a>';
+        // taskStr +=  '<a href="#" class="editTask" data-tid="' + task.id +'">Edit</a>';
         taskStr +=  '<p>' + task.description + '</p>';
         taskStr +=  '</div>';
         return taskStr;
@@ -18,13 +20,14 @@ function renderAllTasks () {
         allTasks,
         i;
 
-        // Assignment
-        allTasks = ''; // Emptying it
-        tasksDataLength = tasksData.length;
+    // Assignment
+    allTasks = ''; // Emptying it
+    tasksDataLength = tasksData.length;
 
     for ( i = 0; i < tasksDataLength; i++ ) {
         allTasks += renderTask(tasksData[i]);
     };
+
     return allTasks;
 }
 
@@ -60,15 +63,17 @@ function deleteTask (taskId) {
         }
     });
 }
+
 /* =================================== SERVER REQUEST ========================================================== */
 
 function XHRequest (url, method, data, callback) {
     $.ajax({
         url: url,
         type: method,
+        dataType: 'JSON',
         data: data
     }).done(function( data ) {
-        console.log('Request Successful' + data);
+        console.log('Request Successful', data);
         if ( callback && typeof callback === 'function' ) {
             callback(data);
         }
