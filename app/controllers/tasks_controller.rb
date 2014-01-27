@@ -7,6 +7,9 @@ class TasksController < ApplicationController
       format.json {
         render json: Task.all
       }
+      format.html {
+        render html: Task.all
+      }
     end
   end
 
