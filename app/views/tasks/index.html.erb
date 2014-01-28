@@ -1,5 +1,6 @@
 <script type="text/javascript">
     var tasksData = <%= @tasks.as_json.to_json.html_safe %>;
+
     _.templateSettings = {
         interpolate: /\{\{\=(.+?)\}\}/g,
         evaluate: /\{\{(.+?)\}\}/g
@@ -7,11 +8,11 @@
 </script>
 
 <script id="tasksTemplate" type="text/template">
-    <div id="taskForm">
-            <input type="text" id="taskInput" placeholder="Enter task name">
-            <textarea type="text" id="descInput" placeholder="Enter task description"></textarea>
-            <a href="#" id="createTask" class="btn btn-primary">Create Task</a>
-    </div>
+<div id="taskForm">
+        <input type="text" id="taskInput" placeholder="Enter task name">
+        <textarea type="text" id="descInput" placeholder="Enter task description"></textarea>
+        <a href="#" id="createTask" class="btn btn-primary">Create Task</a>
+</div>
     <br>
     {{ _.each(tasks, function(task){  }}
         <div class="task">
@@ -24,25 +25,71 @@
 <div id="create-container"></div>
 <div id="container"></div>
 
+
 <script type="text/javascript">
 
-    window.TasksCollection = Backbone.Collection.extend({
-        urlRoot: '/tasks'
+    window.Tasks = Backbone.Collection.extend({
+        url: '/tasks'
+    });
+
+    window.Task = Backbone.Model.extend({
+        url: '/create_task',
+        defaults: {
+            title: 'Default Task',
+            description: null
+        }
     });
 
     window.TasksView = Backbone.View.extend({
+
         el: '#container',
 
-        initialize: function() {
+        events: {
+            'click #createTask': 'createTask'
+        },
+
+        initialize: function(Tasks) {
             this.render();
         },
 
         render: function() {
-            var tasks = new TasksCollection();
-            var template = _.template($('#tasksTemplate').html(), {tasks: tasks.models});
-            this.$el.html(template);
+            var tasks = new Tasks();
+            var thisObj = this;
+            tasks.fetch({
+                success: function(tasks){
+                    var template = _.template($('#tasksTemplate').html(), {tasks: tasks.models});
+                    thisObj.$el.html(template);
+                }
+            });
+        },
+        createTask: function(event) {
+            event.preventDefault();
+            var thisObj = this;
+
+            // Checking Empty
+            if ( $('#taskInput').val() !== '' && $('#descInput').val() !== '' ) {
+
+                // Object/Model to send to save method to save on the server
+                var taskObj = {
+                    title: $('#taskInput').val(),
+                    description: $('#descInput').val()
+                }
+
+                // New model init to save on the server
+                var task = new Task();
+
+                // Saving Model on the server
+                task.save(taskObj, {
+                    success: function(task) {
+                        thisObj.render();
+                    }
+                });
+            } else {
+                return false;
+            }
         }
     });
 
     new TasksView();
+
 </script>

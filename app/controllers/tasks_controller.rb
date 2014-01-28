@@ -3,12 +3,13 @@ class TasksController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
   def index
+    @tasks = Task.all
     respond_to do |format|
       format.json {
-        render json: Task.all
+        render json: @tasks
       }
       format.html {
-        render html: Task.all
+        render html: @tasks
       }
     end
   end
