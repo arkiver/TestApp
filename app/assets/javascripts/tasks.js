@@ -4,8 +4,9 @@
 function renderTask(task) {
 
     var taskStr  =  '<div class="task" data-tid="' + task.id + '">';
-        taskStr +=  '<h4>' + task.title + '</h4>';
         taskStr +=  '<a href="#" class="deleteTask" data-tid="' + task.id +'">X</a>';
+        taskStr +=  '<a href="#" class="editTask" data-tid="' + task.id +'">EDIT</a>';
+        taskStr +=  '<h4>' + task.title + '</h4>';
         // taskStr +=  '<a href="#" class="editTask" data-tid="' + task.id +'">Edit</a>';
         taskStr +=  '<p>' + task.description + '</p>';
         taskStr +=  '</div>';
@@ -61,6 +62,21 @@ function deleteTask (taskId) {
                 }
             });
         }
+    });
+}
+
+/* ========================================== UPDATING ========================================================== */
+
+function updateTask (formData, taskId) {
+    var url = '/update_task?id=' + taskId;
+
+    var taskObj = {
+        title: formData.title,
+        description: formData.description
+    }
+
+    XHRequest (url, 'PUT', taskObj, function(result) {
+        console.log(result);
     });
 }
 

@@ -14,9 +14,12 @@ body {
     background-color: #eee;
     margin-bottom: 10px;
     > h4 { margin-right: 10px; font-size: 14px; color: #f77f00; }
-    > a {
+    > a { margin-right: 10px; }
+    > .deleteTask {
+        float: right;
         text-decoration: none;
     }
+    > .editTask { float: right; }
 }
 
 #taskForm {
