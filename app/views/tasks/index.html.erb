@@ -1,8 +1,23 @@
-<form id="taskForm">
-    <input type="text" id="taskInput" placeholder="Task name">
-    <textarea placeholder="Task description" id="descInput"></textarea>
-    <input type="submit" id="taskSubmit" value="Create Task">
-</form>
+<script type="text/javascript">
+    var tasksData = <%= @tasks.as_json.to_json.html_safe %>;
+</script>
+
+<script id="tasksTemplate" type="text/template">
+    <div id="taskForm">
+            <input type="text" id="taskInput" placeholder="Enter task name">
+            <textarea type="text" id="descInput" placeholder="Enter task description"></textarea>
+            <a href="#" id="createTask" class="btn btn-primary">Create Task</a>
+    </div>
+    <br>
+    {{ _.each(tasks, function(task){  }}
+        <div class="task">
+            <h4>{{= task.get('title') }}</h4>
+            <p>{{= task.get('description') }}</p>
+        </div>
+    {{ }); }}
+</script>
+
+<div id="create-container"></div>
 <div id="container"></div>
 
 <script type="text/javascript">
@@ -31,6 +46,7 @@ $('#taskForm').submit(function(event){
         descInput,
         formData;
 
+<<<<<<< Updated upstream
     if ( $('#taskInput').val() !== '' && $('#descInput').val() !== '' ) {
         taskInput = $('#taskInput').val();
         descInput = $('#descInput').val();
@@ -38,6 +54,23 @@ $('#taskForm').submit(function(event){
         formData = {
             title: taskInput,
             description: descInput
+=======
+            if ( $('#taskInput').val() !== '' && $('#descInput').val() !== '' ) {
+
+                // Checking Empty
+                var task = new Task({
+                    title: $('#taskInput').val(),
+                    description: $('#descInput').val()
+                }).save({
+                    success: function() {
+                        alert('success');
+                    }
+                });
+
+            } else {
+                return false;
+            }
+>>>>>>> Stashed changes
         }
         createTask(formData);
     }

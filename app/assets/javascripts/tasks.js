@@ -41,8 +41,10 @@ function createTask (formData) {
     }
 
     XHRequest ('create_task.json', 'POST', taskObj, function(result) {
-        $('#container').append(renderTask(result));
-        document.querySelector('#taskForm').reset();
+        console.log(result);
+        // $('#container').append(renderTask(result));
+        // alert('done');
+        // document.querySelector('#taskForm').reset();
     });
 }
 
