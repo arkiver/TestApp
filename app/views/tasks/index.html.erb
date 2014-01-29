@@ -1,5 +1,9 @@
 <script type="text/javascript">
     var tasksData = <%= @tasks.as_json.to_json.html_safe %>;
+    _.templateSettings = {
+        interpolate: /\{\{\=(.+?)\}\}/g,
+        evaluate: /\{\{(.+?)\}\}/g
+    };
 </script>
 
 <script id="tasksTemplate" type="text/template">
@@ -22,59 +26,23 @@
 
 <script type="text/javascript">
 
-// On Page Data
-var tasksData = <%= @tasks.as_json.to_json.html_safe %>;
+    window.TasksCollection = Backbone.Collection.extend({
+        urlRoot: '/tasks'
+    });
 
+    window.TasksView = Backbone.View.extend({
+        el: '#container',
 
-// Rendering All Tasks
-$('#container').html(renderAllTasks());
+        initialize: function() {
+            this.render();
+        },
 
-// Deleting Task
-$('body').on('click', '.deleteTask', function (event) {
-    event.preventDefault();
-
-    var taskID = $(this).data('tid');
-
-    deleteTask(taskID);
-});
-
-// Creating Task
-$('#taskForm').submit(function(event){
-    event.preventDefault();
-
-    var taskInput,
-        descInput,
-        formData;
-
-<<<<<<< Updated upstream
-    if ( $('#taskInput').val() !== '' && $('#descInput').val() !== '' ) {
-        taskInput = $('#taskInput').val();
-        descInput = $('#descInput').val();
-
-        formData = {
-            title: taskInput,
-            description: descInput
-=======
-            if ( $('#taskInput').val() !== '' && $('#descInput').val() !== '' ) {
-
-                // Checking Empty
-                var task = new Task({
-                    title: $('#taskInput').val(),
-                    description: $('#descInput').val()
-                }).save({
-                    success: function() {
-                        alert('success');
-                    }
-                });
-
-            } else {
-                return false;
-            }
->>>>>>> Stashed changes
+        render: function() {
+            var tasks = new TasksCollection();
+            var template = _.template($('#tasksTemplate').html(), {tasks: tasks.models});
+            this.$el.html(template);
         }
-        createTask(formData);
-    }
+    });
 
-});
-
+    new TasksView();
 </script>
