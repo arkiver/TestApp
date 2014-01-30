@@ -5,43 +5,64 @@
 </form>
 <div id="container"></div>
 
+
 <script type="text/javascript">
+    
+    var tasksData = <%= @tasks.as_json.to_json.html_safe %>;
 
-// On Page Data
-var tasksData = <%= @tasks.as_json.to_json.html_safe %>;
+    // Rendering all tasks
+    $('#container').html(renderAllTasks());
+
+    // Creating new task
+    $('#taskForm').submit(function(event){
+        event.preventDefault();
+
+        var tasktitle,
+            taskDescription,
+            newTaskObj;
+
+            tasktitle = $(this).find('#taskInput').val();
+            taskDescription = $(this).find('#descInput').val();
+
+            if ( tasktitle !== '' && taskDescription !== '' ) {
+                newTaskObj = {
+                    title: tasktitle,
+                    description: taskDescription
+                }
+
+                // Creating Task
+                createTask(newTaskObj);
+            }
+    });
 
 
-// Rendering All Tasks
-$('#container').html(renderAllTasks());
+    $('body').on('click', '.deleteTask', function(event) {
+        event.preventDefault();
+        var taskId = $(this).data('tid');
+        
+        // Deleting Task
+        deleteTask(taskId);
+    });
 
-// Deleting Task
-$('body').on('click', '.deleteTask', function (event) {
-    event.preventDefault();
+    $('body').on('click', '.editTask', function(event) {
+        event.preventDefault();
+        var taskId = $(this).data('tid'),
+            taskTitle,
+            taskDescription,
+            taskObj;
 
-    var taskID = $(this).data('tid');
+            taskTitle = $(this).parents('.task').find('h4').text();
+            taskDescription = $(this).parents('.task').find('p').text();
 
-    deleteTask(taskID);
-});
+        var str = '<div id="updateForm">';
+            str += '<input type="text" id="taskInput" value="' + taskTitle + '">';
+            str += '<textarea placeholder="Task description" id="descInput">' + taskDescription + '</textarea>';
+            str += '</div>';
 
-// Creating Task
-$('#taskForm').submit(function(event){
-    event.preventDefault();
+            $(this).append(str);
 
-    var taskInput,
-        descInput,
-        formData;
 
-    if ( $('#taskInput').val() !== '' && $('#descInput').val() !== '' ) {
-        taskInput = $('#taskInput').val();
-        descInput = $('#descInput').val();
-
-        formData = {
-            title: taskInput,
-            description: descInput
-        }
-        createTask(formData);
-    }
-
-});
-
+        // Deleting Task
+        // editTask(taskId);
+    });
 </script>
