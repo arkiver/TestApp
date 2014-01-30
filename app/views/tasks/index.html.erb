@@ -32,9 +32,11 @@
         url: '/tasks'
     });
 
+    // Model
     window.Task = Backbone.Model.extend({
         url: '/create_task',
         defaults: {
+            id: null,
             title: 'Default Task',
             description: null
         }
@@ -64,6 +66,7 @@
         },
         createTask: function(event) {
             event.preventDefault();
+
             var thisObj = this;
 
             // Checking Empty
