@@ -17,7 +17,9 @@
     </div>
 
     {{ _.each(tasks, function(task){ }}
-        <div class="task" data-tid="{{= task.get('id') }}">
+        <div class="task">
+            <a href="#" class="deleteTask" data-tid="{{= task.get('id') }}">Delete</a>
+            <a href="#" class="selectTask" data-tid="{{= task.get('id') }}">Edit</a>
             <h4>{{= task.get('title') }}</h4>
             <p>{{= task.get('description') }}</p>
         </div>
@@ -44,7 +46,10 @@
         el: '#container',
 
         events: {
-            'click #taskSubmit': 'createTask'
+            'click #taskSubmit': 'createTask',
+            'click .deleteTask': 'deleteTask',
+            'click .selectTask': 'selectTask',
+            'click #resetTask': 'resetTask'
         },
 
         initialize: function() {
@@ -63,7 +68,7 @@
             });
         },
 
-        createTask: function() {
+        createTask: function(options) {
             var thisObj = this;
 
             if ( $('#taskInput').val() !== '' && $('#descInput').val() !== '' ) {
@@ -76,12 +81,48 @@
 
                 task.save(taskDetails, {
                     success: function(obj) {
+                        console.log(task.toJSON());
                         thisObj.render();
-                        console.log(obj, 'New Model created. Fuck yeah!');
                     }
                 });
             }
+        },
+
+        selectTask: function(event) {
+
+            var taskTitle,
+                taskDescription;
+
+                taskTitle = $(event.target).siblings('h4').text();
+                taskDescription = $(event.target).siblings('p').text();
+                
+                // Setting Values in FORM                
+                $('#taskInput').val(taskTitle);
+                $('#descInput').val(taskDescription);
+                $('#resetTask').remove();
+                $('#taskForm').append('<a href="#" id="resetTask">Reset</a>');
+        },
+
+        resetTask: function() {
+            // Setting Values in FORM
+            $('#taskInput').val('');
+            $('#descInput').val('');
+            $('#resetTask').remove();
+        },
+
+        deleteTask: function(event) {
+
+            var thisObj = this;
+
+            var task = new Task({
+                id: $(event.target).data('tid')
+            }).destroy({
+                success: function() {
+                    thisObj.render();
+                }
+            });
         }
+
     });
 
     new TasksView();

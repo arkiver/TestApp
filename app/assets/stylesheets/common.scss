@@ -17,7 +17,7 @@ body {
     > a {
         text-decoration: none;
     }
-    > .deleteTask { float: right; }
+    > .deleteTask, > .selectTask { float: right; margin-right: 5px; }
 }
 
 #taskForm {
@@ -37,6 +37,16 @@ body {
     }
     #descInput {
         height: 100px;
+    }
+    #resetTask {
+        -webkit-appearance: push-button;
+        white-space: pre;
+        display: inline-block;
+        width: auto;
+        margin-bottom: 0;
+        padding: 2px 6px 3px;
+        line-height: normal;
+        &:hover { text-decoration: none; cursor: default; }
     }
 }
 
