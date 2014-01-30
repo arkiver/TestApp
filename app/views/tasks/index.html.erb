@@ -27,6 +27,15 @@
 
 
 <script type="text/javascript">
+    
+    var tasksData = <%= @tasks.as_json.to_json.html_safe %>;
+
+    // Rendering all tasks
+    $('#container').html(renderAllTasks());
+
+    // Creating new task
+    $('#taskForm').submit(function(event){
+        event.preventDefault();
 
     window.Tasks = Backbone.Collection.extend({
         url: '/tasks'
@@ -95,4 +104,7 @@
 
     new TasksView();
 
+        // Deleting Task
+        // editTask(taskId);
+    });
 </script>
