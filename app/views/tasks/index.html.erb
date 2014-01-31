@@ -33,11 +33,19 @@
     });
 
     window.Task = Backbone.Model.extend({
+
         urlRoot: '/tasks',
+
         defaults: {
             id: null,
             title: '',
             description: ''
+        },
+
+        validate: function(attributes) {
+            if ( attributes.title === '' &&  attributes.description === '' ) {
+                return 'Enter something first';
+            }
         }
     });
 
@@ -68,24 +76,31 @@
             });
         },
 
-        createTask: function(options) {
+        createTask: function() {
             var thisObj = this;
+                
+            var task = new Task();
+            var modelId = $('#modelIdInput').val();
 
-            if ( $('#taskInput').val() !== '' && $('#descInput').val() !== '' ) {
-                var task = new Task();
-
+            if ( modelId && modelId !== undefined ) {
+                var taskDetails = {
+                    id: modelId,
+                    title: $('#taskInput').val(),
+                    description: $('#descInput').val()
+                }
+            } else {
                 var taskDetails = {
                     title: $('#taskInput').val(),
                     description: $('#descInput').val()
                 }
-
-                task.save(taskDetails, {
-                    success: function(obj) {
-                        console.log(task.toJSON());
-                        thisObj.render();
-                    }
-                });
             }
+
+            task.save(taskDetails, {
+                success: function() {
+                    console.log(task.toJSON());
+                    thisObj.render();
+                }
+            });
         },
 
         selectTask: function(event) {
@@ -95,19 +110,20 @@
 
                 taskTitle = $(event.target).siblings('h4').text();
                 taskDescription = $(event.target).siblings('p').text();
+                taskId = $(event.target).data('tid');
                 
                 // Setting Values in FORM                
                 $('#taskInput').val(taskTitle);
                 $('#descInput').val(taskDescription);
-                $('#resetTask').remove();
+                $('#resetTask, #modelIdInput').remove();
                 $('#taskForm').append('<a href="#" id="resetTask">Reset</a>');
+                $('#taskForm').append('<input type="hidden" id="modelIdInput" value="' + taskId + '">');
         },
 
         resetTask: function() {
             // Setting Values in FORM
-            $('#taskInput').val('');
-            $('#descInput').val('');
-            $('#resetTask').remove();
+            $('#taskInput, #descInput').val('');
+            $('#resetTask, #modelIdInput').remove();
         },
 
         deleteTask: function(event) {
