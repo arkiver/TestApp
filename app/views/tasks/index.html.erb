@@ -12,7 +12,9 @@
 <script type="text/template" id="tasksTemplate">
     <div id="taskForm">
         <input type="text" id="taskInput" placeholder="Enter task title">
+        <p class="errorElement"></p>
         <textarea placeholder="Enter Task Description" id="descInput"></textarea>
+        <p class="errorElement"></p>
         <input type="submit" id="taskSubmit">
     </div>
 
@@ -42,9 +44,25 @@
             description: ''
         },
 
-        validate: function(attributes) {
-            if ( attributes.title === '' &&  attributes.description === '' ) {
-                return 'Enter something first';
+        validate: function(attrs) {
+            var errors = [];
+
+            if ( attrs.title === '' ) {
+                errors.push({
+                    'message': 'Please enter title',
+                    'element': '#taskInput'
+                });
+            }
+
+            if ( attrs.description === '' ) {
+                errors.push({
+                    'message': 'Please enter description',
+                    'element': '#descInput'
+                });
+            }
+
+            if ( errors.length ) {
+                return errors;
             }
         }
     });
@@ -67,7 +85,6 @@
         render: function() {
             var thisObj = this;
             var allTasks = new Tasks();
-            
             allTasks.fetch({
                 success: function() {
                     var template = _.template($('#tasksTemplate').html(), {tasks: allTasks.models} );
@@ -80,6 +97,15 @@
             var thisObj = this;
                 
             var task = new Task();
+            task.on('invalid', function(errors){
+                $('.errorElement').hide();
+                $('.error').removeClass('error');
+                _.each(errors.validationError, function(item){
+                    $(item.element).addClass('error');
+                    $(item.element).next('.errorElement').text(item.message).show();
+                });
+            });
+
             var modelId = $('#modelIdInput').val();
 
             if ( modelId && modelId !== undefined ) {
@@ -141,5 +167,6 @@
 
     });
 
-    new TasksView();
+    var taskView = new TasksView();
+
 </script>

@@ -7,6 +7,7 @@
 
 body {
     font-family: $defaultFamily;
+    padding: 30px;
 }
 
 .task {
@@ -23,7 +24,7 @@ body {
 #taskForm {
     width: 500px;
     margin: 20px auto;
-    > *:not(#taskSubmit) {
+    > #taskInput, > #descInput {
         width: 100%;
         font-size: 0.90rem;
         padding: 10px 5px;
@@ -31,6 +32,9 @@ body {
         resize: none;
         margin-bottom: 10px;
         &:focus { outline: none; }
+    }
+    > *.error:not(#taskSubmit) {
+        border: red solid 1px;
     }
     #taskInput {
 
@@ -53,4 +57,9 @@ body {
 #container {
     width: 500px;
     margin: auto;
+}
+
+.errorElement {
+    color: red;
+    font-size: 0.75em;
 }
